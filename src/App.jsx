@@ -1,4 +1,5 @@
 // App.jsx (위치: src/)
+// init
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import ResultPanel from './components/ResultPanel';
