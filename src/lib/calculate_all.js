@@ -61,7 +61,7 @@ import {
     const dyn = calculateDynamicFactors({ h, B, L, V, expParams, na, beta: 0.02 });
     const G = calculateG({ na, Iz: dyn.Iz, Q: dyn.Q, R: dyn.R, gR: dyn.gR });
     const KZT = Topographic_data === 'yes'
-      ? calculateKZT(exp, input.topoType, UD, H_hill, Lh, x, h)
+      ? calculateKZT(exp, input.topoType, UD, H_hill, Lh, x, h, input.eave_h)
       : 1.0;
   
     const q = calculateVelocityPressure({ Kz, KZT, Kd, V });

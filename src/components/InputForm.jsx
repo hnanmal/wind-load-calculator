@@ -1,4 +1,3 @@
-// InputForm.jsx (위치: src/components/)
 import { useState } from 'react';
 
 export default function InputForm({ onSubmit }) {
@@ -20,7 +19,8 @@ export default function InputForm({ onSubmit }) {
     Lh: 561.454,
     x: -1127,
     UD: 'Up',
-    topoType: '2Descarpments'
+    topoType: '2Descarpments',
+    eave_h: "", // 지붕 처마 높이
   });
 
   const handleChange = (e) => {
@@ -53,7 +53,8 @@ export default function InputForm({ onSubmit }) {
     ['H_hill', '언덕 높이 (m)'],
     ['Lh', '기준 거리 Lh (m)'],
     ['x', '정상으로부터 거리 x (m)'],
-    ['UD', '위치', ['Up', 'Down']]
+    ['UD', '위치', ['Up', 'Down']],
+    ['eave_h', '건물 처마 높이 (m)'], // 🔥 새로 추가됨
   ];
 
   return (

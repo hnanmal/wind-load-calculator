@@ -31,20 +31,23 @@ const KZT_TABLE_1 = {
    * @param {number} H_hill - 언덕 높이
    * @param {number} Lh - 기준 거리
    * @param {number} x - 건물 위치 (양수: 후방, 음수: 전방)
-   * @param {number} h - 건물 높이 (mean roof height)
+   * @param {number} h - 건물 평균 높이 (mean roof height)
+   * @param {number} [eave_h] - (옵션) 처마 높이
    * @returns {number} - 계산된 KZT 값
    */
-  export function calculateKZT(exposure, topoType, upDown, H_hill, Lh, x, h) {
+  export function calculateKZT(exposure, topoType, upDown, H_hill, Lh, x, h, eave_h) {
     if (!topoType || topoType === 'no') return 1.0;
-  
+
+    const H = eave_h || h; // 🔥 eave_h 우선 사용
+
     const K1 = (H_hill / Lh > 0.5)
       ? KZT_TABLE_1[exposure][topoType] * 0.5
       : KZT_TABLE_1[exposure][topoType] * (H_hill / Lh);
-  
+
     const K2 = 1 - Math.abs(x) / (KZT_TABLE_2.mus[topoType + upDown] * Lh);
     const gamma = KZT_TABLE_2.gammas[topoType];
-    const K3 = Math.exp(-gamma * h / Lh);
-  
+    const K3 = Math.exp(-gamma * H / Lh);
+
     const KZT = (1 + K1 * K2 * K3) ** 2;
     return +KZT.toFixed(4);
   }

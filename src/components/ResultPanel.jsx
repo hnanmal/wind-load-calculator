@@ -43,7 +43,7 @@ export default function ResultPanel({ result, input }) {
         <div className="mb-4">
           <h3 className="font-semibold mb-2">&lt;Topographic Input Data&gt;</h3>
           <ul className="list-disc pl-4">
-            <li>Building Eave Height : 13 m</li>
+            <li>Building Eave Height : {input.eave_h} m</li>
             <li>Distance upwind of crest to where the difference in ground elevation in half the height of hill : {input.Lh} m</li>
             <li>Height of Hill : {input.H_hill} m</li>
             <li>Distance from the crest to the building site : {Math.abs(input.x)} m</li>
