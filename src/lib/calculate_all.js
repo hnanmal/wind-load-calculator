@@ -50,6 +50,12 @@ import {
     const zoneA = getZoneA(B, L, h);
     const ewaVal = getEffectiveWindArea(purlin_s, purlin_l);
     const ewa = getEWA(ewaVal, zoneA);
+
+    console.log("📏 EWA 계산 로그:");
+    console.log("  - EWA 값 (m²):", ewaVal);
+    console.log("  - zoneA (m):", zoneA, "→ zoneA²:", zoneA ** 2, "→ 4×zoneA²:", 4 * zoneA ** 2);
+    console.log("  - 판정된 EWA 등급:", ewa);  // ✅ 여기에 EWA1, EWA2, EWA3 나와야 함
+
     const h_ft = h / 0.305;
     const na = calculateNa(h_ft, StructuralType);
     const dyn = calculateDynamicFactors({ h, B, L, V, expParams, na, beta: 0.02 });
@@ -62,23 +68,31 @@ import {
   
     const CNW = ['A', 'B'].flatMap(dir =>
       ['gamma0', 'gamma180'].map(gamma =>
-        interpolateFromTable(tables.CNW, `${Type}${dir}${gamma}${blockage}`, xnew))
+        interpolateFromTable(tables.CNW, `${Type}${dir}${gamma}${blockage.toUpperCase()}`, xnew))
     );
-  
+    
     const CNL = ['A', 'B'].flatMap(dir =>
       ['gamma0', 'gamma180'].map(gamma =>
-        interpolateFromTable(tables.CNL, `${Type}${dir}${gamma}${blockage}`, xnew))
+        interpolateFromTable(tables.CNL, `${Type}${dir}${gamma}${blockage.toUpperCase()}`, xnew))
     );
-  
+    
     const CNgamma90 = ['gamma90<h', 'gamma90<2h', 'gamma90>2h'].flatMap(g =>
-      ['A', 'B'].map(dir =>
-        interpolateFromTable(tables.CNgamma90, `${Type}${dir}${g}${blockage}`, xnew))
+      ['A', 'B'].map(dir => {
+        const key = `${Type}${dir}${g}${blockage.toUpperCase()}`;
+        console.log("🔑 CNgamma90 key used:", key);
+        return interpolateFromTable(tables.CNgamma90, key, xnew);
+      })
     );
-  
+    
     const CNcc_by_zone = tables.CNccZones.map((zoneTable, z) => {
-      return ['A', 'B'].map(dir =>
-        interpolateFromTable(zoneTable, `${Type}${ewa}${blockage}${dir}`, xnew));
+      return ['A', 'B'].map(dir => {
+        const key = `${Type}${ewa}${blockage}${dir}`;
+        console.log(`📌 Zone ${3 - z}, Key used: ${key}`);
+        return interpolateFromTable(zoneTable, key, xnew);
+      });
     });
+    
+    
   
     return {
       meta: { q, G, Kz, KZT, na, zoneA, ewa, h_ft },

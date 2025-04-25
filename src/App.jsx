@@ -1,5 +1,4 @@
 // App.jsx (위치: src/)
-// init
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import ResultPanel from './components/ResultPanel';
@@ -21,7 +20,7 @@ export default function App() {
       <h1 className="text-3xl font-bold text-center mb-6">🌬️ 풍하중 계산기</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <InputForm onSubmit={handleCalculate} />
-        <ResultPanel result={result} />
+        <ResultPanel result={result} input={input} />
       </div>
     </div>
   );

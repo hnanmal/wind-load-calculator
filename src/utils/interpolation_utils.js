@@ -27,9 +27,19 @@ export function linearInterpolate(x, y, xNew) {
    * @param {number} xNew - 보간할 경사 값 (예: 37도)
    * @returns {number|null} 보간 결과
    */
-  export function interpolateFromTable(table, key, xNew) {
-    const x = table['RoofSlop'];
-    const y = table[key];
-    return linearInterpolate(x, y, xNew);
-  }
+  export function interpolateFromTable(table, key, x) {
+    const xi = table['RoofSlop'];
+    const yi = table[key];
   
+    if (!yi) {
+      const availableKeys = Object.keys(table);
+      console.error(`❌ interpolateFromTable: '${key}' 키가 테이블에 존재하지 않습니다.`);
+      console.log('📂 사용된 테이블:', table);
+      console.log('🗝️ 테이블에 있는 실제 키 목록:', availableKeys);
+      console.log('🔍 정확히 일치하는 키 존재 여부:', availableKeys.includes(key));
+      console.log('🔍 유사한 키 찾기:', availableKeys.filter(k => k.includes(key.slice(0, 6))));
+      throw new Error(`계수 테이블에서 '${key}' 항목을 찾을 수 없습니다.`);
+    }
+  
+    return linearInterpolate(xi, yi, x);
+  }
